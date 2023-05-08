@@ -1,0 +1,11 @@
+﻿[Delete]
+Compiled
+
+[Copy]
+photoPage/bin/Release/net6.0 > Compiled
+
+[Exclude]
+.git
+.vs
+photoPage/bin
+photoPage/obj
