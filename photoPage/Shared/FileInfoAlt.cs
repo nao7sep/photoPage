@@ -78,8 +78,11 @@ namespace photoPage
                     // BitmapMetadata.cs
                     // https://source.dot.net/#PresentationCore/System/Windows/Media/Imaging/BitmapMetadata.cs
 
-                    if (string.IsNullOrEmpty (xMetadata.DateTaken)) // DateTaken がない
+                    if (string.IsNullOrEmpty (xMetadata.DateTaken))
+                    {
+                        mContainsExifDateTaken = false;
                         mLocalDateTaken = FileAlt.LastWriteTime;
+                    }
 
                     else
                     {
@@ -92,7 +95,10 @@ namespace photoPage
                             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                             if (DateTime.TryParse (xMetadata.DateTaken, out DateTime xResult))
+                            {
+                                mContainsExifDateTaken = true;
                                 mLocalDateTaken = xResult;
+                            }
 
                             else
                             {
@@ -102,6 +108,7 @@ namespace photoPage
 
                                 Console.WriteLine ("んなこたない: " + FileAlt.FullName);
 #endif
+                                mContainsExifDateTaken = false;
                                 mLocalDateTaken = FileAlt.LastWriteTime;
                             }
                         }).
@@ -127,6 +134,19 @@ namespace photoPage
                     iLoadAsImage ();
 
                 return mIsValidImage!.Value;
+            }
+        }
+
+        private bool? mContainsExifDateTaken = null;
+
+        public bool ContainsExifDateTaken
+        {
+            get
+            {
+                if (mContainsExifDateTaken == null)
+                    iLoadAsImage ();
+
+                return mContainsExifDateTaken!.Value;
             }
         }
 
