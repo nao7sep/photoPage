@@ -212,7 +212,7 @@ namespace photoPage
                 xImage.Resize (maxWidth, maxHeight);
                 xImage.Format = MagickFormat.Jpeg;
                 xImage.Quality = quality;
-                xImage.Write (filePath);
+                xImage.Write (filePath); // 上書きモード
             }
         }
     }

@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 
 namespace photoPage
 {
@@ -18,6 +18,9 @@ namespace photoPage
 
                 foreach (string xPath in args)
                 {
+                    // 対象ディレクトリーごとの try/catch がなく、どこかで例外が飛ぶとプログラムがすぐに正常終了するのは、ただの手抜き
+                    // まず落ちないし、複数のディレクトリーの同時処理は稀だし、どこかで落ちたなら自分はほかのディレクトリーの処理もやり直す
+
                     if (Path.IsPathFullyQualified (xPath) == false || Directory.Exists (xPath) == false)
                     {
                         Console.WriteLine ("パラメーターを認識できません: " + xPath);
@@ -70,22 +73,29 @@ namespace photoPage
 
                     // =============================================================================
 
-                    string xTempArchiveFileName = "●.zip",
-                        xTempArchiveFilePath = Path.Join (xTargetDirectoryPath, xTempArchiveFileName);
+                    // ダウンロードすると手元のファイルと混ざるため日付くらいは含めるのが親切と思い、初期値を「●.zip」としたが、
+                    //     そういう配慮のないシステムが無数にあって世の中はまわっている
+                    // All.zip なども考えたが、photoPages なので Photos.zip で文句のつけようがない
 
-                    xSourceDirectory.CompressInto (xTempArchiveFilePath);
+                    string xArchiveFileName = "Photos.zip",
+                        xArchiveFilePath = Path.Join (xTargetDirectoryPath, xArchiveFileName);
 
-                    Console.WriteLine ("圧縮ファイルが作られました: " + xTempArchiveFilePath);
+                    xSourceDirectory.CompressInto (xArchiveFilePath);
+                    Console.WriteLine ("圧縮ファイルが作られました: " + xArchiveFilePath);
 
                     // =============================================================================
 
-                    string xOriginalDirectoryPath = Path.Join (xTargetDirectoryPath, "Original");
+                    string xOriginalDirectoryName = "Original",
+                        xOriginalDirectoryPath = Path.Join (xTargetDirectoryPath, xOriginalDirectoryName);
+
                     Directory.CreateDirectory (xOriginalDirectoryPath);
 
-                    string xResizedDirectoryPath = Path.Join (xTargetDirectoryPath, "Resized");
+                    string xResizedDirectoryName = "Resized",
+                        xResizedDirectoryPath = Path.Join (xTargetDirectoryPath, xResizedDirectoryName);
+
                     Directory.CreateDirectory (xResizedDirectoryPath);
 
-                    int xMaxWidthAndHeight = 720,
+                    int xMaxWidthAndHeight = 1280,
                         xQuality = 75,
                         xHandledImageCount = 0,
                         xTotalImageCount = xSourceDirectory.Files.Count (); // この時点では全てが画像ファイル
@@ -93,13 +103,19 @@ namespace photoPage
                     foreach (FileInfoAlt xFile in xSourceDirectory.Files)
                     {
                         xFile.FileAlt.CopyTo (Path.Join (xOriginalDirectoryPath, xFile.OriginalName));
-
                         xFile.ResizeAndSaveImage (xMaxWidthAndHeight, xMaxWidthAndHeight, xQuality, Path.Join (xResizedDirectoryPath, xFile.OriginalName));
-
                         Console.Write (FormattableString.Invariant ($"\r画像を処理しています: {++ xHandledImageCount}/{xTotalImageCount}"));
                     }
 
                     Console.WriteLine ();
+
+                    // =============================================================================
+
+                    string xPageFileName = "Default.htm",
+                        xPageFilePath = Path.Join (xTargetDirectoryPath, xPageFileName);
+
+                    xSourceDirectory.GeneratePage (xPageFilePath, xArchiveFileName, xOriginalDirectoryName, xResizedDirectoryName);
+                    Console.WriteLine ("ページが作られました: " + xPageFilePath);
                 }
             }
 
