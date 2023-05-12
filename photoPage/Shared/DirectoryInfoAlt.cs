@@ -46,7 +46,7 @@ namespace photoPage
             xBuilder.AppendLine ("<html>");
             xBuilder.AppendLine ("<head>");
             xBuilder.AppendLine ("<title>●</title>");
-            xBuilder.AppendLine ("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"); // 後ろの方の / を省く理由は taskKiller のメモに
+            xBuilder.AppendLine ("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />");
 
             // div 同士の上下マージンの打ち消しをシンプルに行うため、入れ子なしのフラットな構造に
 
@@ -112,7 +112,7 @@ namespace photoPage
             {
                 xBuilder.AppendLine ("<div class=\"image\">");
                 xBuilder.AppendLine ($"<a href=\"{WebUtility.UrlEncode (originalDirectoryName)}/{WebUtility.UrlEncode (xFile.OriginalName)}\" target=\"_blank\">");
-                xBuilder.AppendLine ($"<img src=\"{WebUtility.UrlEncode (resizedDirectoryName)}/{WebUtility.UrlEncode (xFile.OriginalName)}\">");
+                xBuilder.AppendLine ($"<img src=\"{WebUtility.UrlEncode (resizedDirectoryName)}/{WebUtility.UrlEncode (xFile.OriginalName)}\" />");
                 xBuilder.AppendLine ("</a>");
                 xBuilder.AppendLine ("</div>");
             }

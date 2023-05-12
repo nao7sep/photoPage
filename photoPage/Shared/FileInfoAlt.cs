@@ -211,10 +211,18 @@ namespace photoPage
             // また、「どのフォーマットにするか既に分かっていて、まだ Exif も残っていての縮小化」にするため、
             //     Format と Quality の指定を Resize より早め、Exif の削除を Resize 後に行うように
 
+            // さらに追記: Strip で Exif 情報を削ると、縮小版が自動回転されての表示にならない
+            // 回転してから Exif 情報を削るようにした
+            // おそらく Resize してからの AutoOrient の方が高速だが、
+            //     画像処理においては1ピクセルの縦横比が異なるなどのレアケースもあるようなので、
+            //     より多くの情報をもって Resize ができるように先に回す
+            // 回転はメモリー上での、データのほぼシーケンシャルなコピーなので、そう重たくないはず
+
             using (MagickImage xImage = new MagickImage (FileAlt))
             {
                 xImage.Format = MagickFormat.Jpeg;
                 xImage.Quality = quality;
+                xImage.AutoOrient ();
                 xImage.Resize (maxWidth, maxHeight);
                 xImage.Strip ();
                 xImage.Write (filePath); // 上書きモード
