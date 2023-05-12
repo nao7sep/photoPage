@@ -207,11 +207,16 @@ namespace photoPage
             // c# - How to adjust jpeg quality with Magick.Net - Stack Overflow
             // https://stackoverflow.com/questions/19884486/how-to-adjust-jpeg-quality-with-magick-net
 
+            // 追記: bilinear と bicubic の比較などについて taskKiller のメモに書いた
+            // また、「どのフォーマットにするか既に分かっていて、まだ Exif も残っていての縮小化」にするため、
+            //     Format と Quality の指定を Resize より早め、Exif の削除を Resize 後に行うように
+
             using (MagickImage xImage = new MagickImage (FileAlt))
             {
-                xImage.Resize (maxWidth, maxHeight);
                 xImage.Format = MagickFormat.Jpeg;
                 xImage.Quality = quality;
+                xImage.Resize (maxWidth, maxHeight);
+                xImage.Strip ();
                 xImage.Write (filePath); // 上書きモード
             }
         }
