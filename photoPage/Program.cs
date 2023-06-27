@@ -4,7 +4,7 @@ namespace photoPage
 {
     internal class Program
     {
-        private static string mOneLevelOfIndentation = new string ('\x20', 4);
+        private static readonly string mOneLevelOfIndentation = new string ('\x20', 4);
 
         static void Main (string [] args)
         {
@@ -41,7 +41,7 @@ namespace photoPage
                         continue;
                     }
 
-                    if (xSourceDirectory.Files.DistinctBy (x => x.OriginalName, StringComparer.OrdinalIgnoreCase).Count () != xSourceDirectory.Files.Count ())
+                    if (xSourceDirectory.Files.DistinctBy (x => x.OriginalName, StringComparer.OrdinalIgnoreCase).Count () != xSourceDirectory.Files.Length)
                     {
                         Console.WriteLine ("同じ名前のファイルが含まれています: " + xPath);
                         continue;
@@ -98,7 +98,7 @@ namespace photoPage
                     int xMaxWidthAndHeight = 1280,
                         xQuality = 75,
                         xHandledImageCount = 0,
-                        xTotalImageCount = xSourceDirectory.Files.Count (); // この時点では全てが画像ファイル
+                        xTotalImageCount = xSourceDirectory.Files.Length; // この時点では全てが画像ファイル
 
                     foreach (FileInfoAlt xFile in xSourceDirectory.Files)
                     {
