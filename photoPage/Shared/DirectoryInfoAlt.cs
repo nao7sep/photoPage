@@ -97,7 +97,7 @@ namespace photoPage
             xBuilder.AppendLine ("div.title { padding: 10px 10px 0 10px; font-size: 1.5rem; line-height: 1 }");
             xBuilder.AppendLine ("div.message { padding: 0 10px; font-size: 1rem; line-height: 1.5 }");
             xBuilder.AppendLine ("div.download { padding: 0 10px 10px 10px; font-size: 1rem; line-height: 1.5 }");
-            xBuilder.AppendLine ("div.image img { display: block; width: 100% }");
+            xBuilder.AppendLine ("div.image img { box-sizing: border-box; vertical-align: top; width: 100% }");
             xBuilder.AppendLine ("</style>");
 
             xBuilder.AppendLine ("</head>");
