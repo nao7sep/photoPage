@@ -1,17 +1,18 @@
 ﻿[Delete]
-Compiled
+App
 
 [Copy]
-photoPage/bin/Release/net6.0-windows > Compiled
+photoPage/bin/Release/net6.0-windows > App
 
 [Delete]
-Compiled/runtimes/linux-arm64
-Compiled/runtimes/linux-musl-x64
-Compiled/runtimes/linux-x64
-Compiled/runtimes/osx-arm64
-Compiled/runtimes/osx-x64
-Compiled/runtimes/win-arm64
-Compiled/runtimes/win-x86
+App/photoPage.pdb
+App/runtimes/linux-arm64
+App/runtimes/linux-musl-x64
+App/runtimes/linux-x64
+App/runtimes/osx-arm64
+App/runtimes/osx-x64
+App/runtimes/win-arm64
+App/runtimes/win-x86
 
 [Exclude]
 .git
